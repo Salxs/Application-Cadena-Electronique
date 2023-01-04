@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/enable_bt"
-        android:text="Enable"/>
+        android:text="@string/enable_check"/>
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/visible_bt"
-        android:text="Visible"
-        android:layout_alignParentRight="true"/>
+        android:text="@string/visible_check"
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mes Appareils Bluetooth "
+        android:text="@string/appareils"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:id="@+id/name_bt"
@@ -39,12 +39,22 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/name_bt"
-        android:backgroundTint="#052DB7"/>
+        android:backgroundTint="#052DB7"
+        android:contentDescription="@string/description_img" />
 
     <ListView
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view"
         android:layout_below="@+id/search_bt"
-        />
- </RelativeLayout>
+        android:layout_marginTop="0dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_view"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_bt"
+        android:text="@string/bouton_suivant"/>
+
+</RelativeLayout>

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">CadenaElectronique</string>
+    <string name="appareils">Mes appareils Bluetooth</string>
+    <string name="enable_check">Enable</string>
+    <string name="visible_check">Visible</string>
+    <string name="description_img">Bluetooth Icone</string>
+    <string name="bouton_suivant">Suivant</string>
+    <string name="texte_menu">Choisissez l\'action que vous voulez effetuer ?</string>
+    <string name="verrouillage">Verrouillage</string>
+    <string name="enregistrement">Enregistrement d\'un badge</string>
+    <string name="GPS">Coordonnées GPS du Cadena</string>
 </resources>
