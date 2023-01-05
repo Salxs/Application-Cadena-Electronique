@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         name_bt.setText(getLocalBluetoothName());
 
         if (BA == null) {
-            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.bluetooth_not_supported), Toast.LENGTH_SHORT).show();
             finish();
         }
         if (BA.isEnabled()) {
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 BA.disable();
-                Toast.makeText(MainActivity.this, "Turned off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.eteint), Toast.LENGTH_SHORT).show();
             } else {
                 Intent intentOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 mIntent.launch(intentOn);
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == 0) {
-                        Toast.makeText(MainActivity.this, "Turned on", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.allumer), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == 0) {
-                        Toast.makeText(MainActivity.this, "Visible for 2 minutes", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.visible), Toast.LENGTH_SHORT).show();
                     }
                 });
         search_bt.setOnClickListener(view -> list());
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             list.add(bt.getName());
         }
 
-        Toast.makeText(this, "Showing devices", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.showing_device), Toast.LENGTH_SHORT).show();
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         mListView.setAdapter(adapter);
     }

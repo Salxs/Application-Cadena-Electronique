@@ -50,7 +50,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton coordonnées GPS
         else{
-            
+
         }
     }
 }
