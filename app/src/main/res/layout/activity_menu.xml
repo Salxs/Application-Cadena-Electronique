@@ -43,4 +43,12 @@
         android:id="@+id/gps_button"
         android:text="@string/GPS"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/bouton_retour"
+        android:layout_margin="8dp"
+        android:text="@string/retour"/>
+
 </LinearLayout>

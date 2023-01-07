@@ -9,6 +9,7 @@
     <string name="verrouillage">Verrouillage</string>
     <string name="enregistrement">Enregistrement d\'un badge</string>
     <string name="GPS">Coordonnées GPS du Cadena</string>
+    <string name="retour">Précédent</string>
     <string name="bluetooth_not_supported">Bluetooth not supported</string>
     <string name="eteint">Turned off</string>
     <string name="allumer">Turned on</string>

@@ -3,9 +3,13 @@ package fr.shams.cadenaelectronique.Activities;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,15 +27,34 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import fr.shams.cadenaelectronique.R;
+import fr.shams.cadenaelectronique.helpers.BluetoothService;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Déclaration des attributs
-    CheckBox enable_bt, visible_bt;
-    ImageView search_bt;
-    TextView name_bt;
-    ListView mListView;
-    Button mButton;
+
+    //Déclaration des attributs pour les widgets
+    private CheckBox enable_bt, visible_bt;
+    private ImageView search_bt;
+    private TextView name_bt;
+    private ListView mListView;
+    private Button mButton;
+    //Déclaration des atributs pour la gestion du Bluetooth
+    private BluetoothService mBluetoothService;
+    private boolean mBound = false;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            BluetoothService.BluetoothBinder binder = (BluetoothService.BluetoothBinder) iBinder;
+            mBluetoothService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBound = false;
+        }
+    };
 
     //Attributs utilisés pour la méthode RegisterForActivityResult
     ActivityResultLauncher<Intent> mIntent;
@@ -44,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Bind to the Bluetooth service
+        Intent intent = new Intent(this, BluetoothService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
         //Affectation des widgets au différentes variables
         enable_bt = findViewById(R.id.enable_bt);

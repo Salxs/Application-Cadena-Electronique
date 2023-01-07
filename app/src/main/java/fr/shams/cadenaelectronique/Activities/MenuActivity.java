@@ -28,12 +28,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         mActionButton = Arrays.asList(
                 findViewById(R.id.verrouillage_button),
                 findViewById(R.id.enregistrement_button),
-                findViewById(R.id.gps_button)
+                findViewById(R.id.gps_button),
+                findViewById(R.id.bouton_retour)
         );
 
         mActionButton.get(0).setOnClickListener(this);
         mActionButton.get(1).setOnClickListener(this);
         mActionButton.get(2).setOnClickListener(this);
+        mActionButton.get(3).setOnClickListener(this);
     }
 
     @Override
@@ -49,8 +51,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton coordonnées GPS
-        else{
+        else if(index == 2){
 
+        }
+
+        else{
+            finish();
         }
     }
 }
