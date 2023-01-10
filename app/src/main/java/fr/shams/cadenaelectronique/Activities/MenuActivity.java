@@ -3,13 +3,19 @@ package fr.shams.cadenaelectronique.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import fr.shams.cadenaelectronique.R;
 
@@ -17,8 +23,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     //Déclaration d'une liste contenant les boutons
     private List<Button> mActionButton;
+    private BluetoothSocket mSocket;
+    private OutputStream mOutputStream;
+    private InputStream mInputStream;
+    private BluetoothDevice mDevice;
 
-
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +46,26 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         mActionButton.get(1).setOnClickListener(this);
         mActionButton.get(2).setOnClickListener(this);
         mActionButton.get(3).setOnClickListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mDevice = (BluetoothDevice) extras.get("bluetooth_device");
+            // utiliser l'objet device pour continuer la communication
+        }
+
+        UUID my_uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+        try{
+            mSocket = mDevice.createRfcommSocketToServiceRecord(my_uuid);
+            mSocket.connect();
+            mInputStream = mSocket.getInputStream();
+            mOutputStream = mSocket.getOutputStream();
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -57,6 +86,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         else{
             finish();
+        }
+    }
+
+    public void sendData(String message){
+        try {
+            
         }
     }
 }

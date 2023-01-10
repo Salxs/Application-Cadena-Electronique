@@ -9,6 +9,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/name_bt"
         android:id="@+id/enable_bt"
         android:text="@string/enable_check"/>
 
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/visible_bt"
+        android:layout_below="@+id/name_bt"
         android:text="@string/visible_check"
         android:layout_alignParentEnd="true"
         tools:ignore="RelativeOverlap" />
@@ -25,7 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/appareils"
+        android:padding="20dp"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textStyle="bold"
         android:id="@+id/name_bt"
         android:textSize="18sp"/>
@@ -34,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_search"
-        android:padding="5dp"
+        android:padding="10dp"
         android:id="@+id/search_bt"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
@@ -42,19 +46,31 @@
         android:backgroundTint="#052DB7"
         android:contentDescription="@string/description_img" />
 
-    <ListView
-        android:id="@+id/list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/search_bt"
-        android:layout_marginTop="0dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_view"
+        android:layout_below="@+id/search_bt"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/connection_bt"
+        android:layout_margin="16dp"
+        android:text="@string/connexion_bt"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/connection_bt"
         android:layout_centerHorizontal="true"
         android:id="@+id/button_bt"
+        android:layout_margin="16dp"
         android:text="@string/bouton_suivant"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_bt"
+        android:layout_margin="16dp"
+        android:id="@+id/leave_btn"
+        android:text="@string/leave_button"/>
 
 </RelativeLayout>

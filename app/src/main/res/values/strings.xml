@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">CadenaElectronique</string>
-    <string name="appareils">Mes appareils Bluetooth</string>
+    <string name="appareils">Page de connexion Bluetooth avec le cadena</string>
     <string name="enable_check">Enable</string>
     <string name="visible_check">Visible</string>
     <string name="description_img">Bluetooth Icone</string>
     <string name="bouton_suivant">Suivant</string>
+    <string name="connexion_bt">Connexion au Cadena</string>
+    <string name="leave_button">Quitter l\'application</string>
+    <string name="name_bt">ESEO</string>
+    <string name="connection_msg">L\'appareil ESEO est connécté</string>
     <string name="texte_menu">Choisissez l\'action que vous voulez effetuer ?</string>
     <string name="verrouillage">Verrouillage</string>
     <string name="enregistrement">Enregistrement d\'un badge</string>
