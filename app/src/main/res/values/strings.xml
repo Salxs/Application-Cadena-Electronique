@@ -8,7 +8,7 @@
     <string name="connexion_bt">Connexion au Cadena</string>
     <string name="leave_button">Quitter l\'application</string>
     <string name="name_bt">ESEO</string>
-    <string name="connection_msg">L\'appareil ESEO est connécté</string>
+    <string name="connection_msg">L\'appareil ESEO est connecté</string>
     <string name="texte_menu">Choisissez l\'action que vous voulez effetuer ?</string>
     <string name="verrouillage">Verrouillage</string>
     <string name="enregistrement">Enregistrement d\'un badge</string>

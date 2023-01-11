@@ -1,10 +1,12 @@
 package fr.shams.cadenaelectronique.Activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +15,10 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +28,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     //Déclaration d'une liste contenant les boutons
     private List<Button> mActionButton;
+    //Déclaration des attributs de la classe
     private BluetoothSocket mSocket;
     private OutputStream mOutputStream;
     private InputStream mInputStream;
@@ -71,6 +76,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         int index = mActionButton.indexOf((Button) view);
+        String message;
 
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton verrouillage
         if(index == 0 ){
@@ -84,12 +90,18 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton coordonnées GPS
         else if(index == 2){
-            sendData("gps");
+            try {
+                sendData("gps");
+                message = receptionData();
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         else{
             try {
-                sendData("déconnexion");
+                sendData("deconnexion");
                 mSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -105,5 +117,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String receptionData() throws IOException {
+        byte[] bytes = new byte[1024];
+        mInputStream.read(bytes);
+        String message = new String(bytes, StandardCharsets.UTF_8);
+        return message;
     }
 }
