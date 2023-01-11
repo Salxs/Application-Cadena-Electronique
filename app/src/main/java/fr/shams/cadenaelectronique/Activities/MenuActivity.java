@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +60,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             mSocket.connect();
             mInputStream = mSocket.getInputStream();
             mOutputStream = mSocket.getOutputStream();
-
+            sendData("connecter");
         }
         catch (IOException e){
             e.printStackTrace();
@@ -73,25 +74,36 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton verrouillage
         if(index == 0 ){
-
+            sendData("verrouille");
+            Toast.makeText(this, getString(R.string.demande_verrouillage), Toast.LENGTH_SHORT).show();
         }
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton enregistrement de badge
         else if(index == 1){
-
+            sendData("badge");
+            Toast.makeText(this, getString(R.string.demande_enregistrement_badge), Toast.LENGTH_SHORT).show();
         }
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton coordonnées GPS
         else if(index == 2){
-
+            sendData("gps");
         }
 
         else{
+            try {
+                sendData("déconnexion");
+                mSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             finish();
         }
     }
 
     public void sendData(String message){
         try {
-            
+            mOutputStream.write(message.getBytes());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

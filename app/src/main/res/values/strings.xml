@@ -19,4 +19,6 @@
     <string name="allumer">Turned on</string>
     <string name="visible">Visible for 2 minutes</string>
     <string name="showing_device">Showing Devices</string>
+    <string name="demande_verrouillage">Verrouillage</string>
+    <string name="demande_enregistrement_badge">Vous pouvez poser votre badge sur le capteur</string>
 </resources>
