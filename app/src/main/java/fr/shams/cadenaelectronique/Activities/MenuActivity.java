@@ -8,6 +8,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -33,6 +35,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private OutputStream mOutputStream;
     private InputStream mInputStream;
     private BluetoothDevice mDevice;
+    private volatile boolean stopWorker;
+    private Thread workerThread;
+    int readBufferPosition;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -76,7 +81,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         int index = mActionButton.indexOf((Button) view);
-        String message;
 
         //Portion de code permettant la gestion de l'action suite au clique sur le bouton verrouillage
         if(index == 0 ){
@@ -92,8 +96,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         else if(index == 2){
             try {
                 sendData("gps");
-                message = receptionData();
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                receptionData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -119,10 +122,46 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public String receptionData() throws IOException {
-        byte[] bytes = new byte[1024];
-        mInputStream.read(bytes);
-        String message = new String(bytes, StandardCharsets.UTF_8);
-        return message;
+    public void receptionData() throws IOException {
+        final Handler handler = new Handler();
+        final int delimiter = 10;
+
+        stopWorker = false;
+        readBufferPosition = 0;
+        byte[] readBuffer = new byte[1024];
+        workerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!workerThread.currentThread().isInterrupted() && !stopWorker){
+                    try {
+                        int byteAvailable = mInputStream.available();
+                        if(byteAvailable > 0){
+                            byte[] packetBytes = new byte[byteAvailable];
+                            mInputStream.read(packetBytes);
+                            for(int i =0; i < byteAvailable; i++){
+                                byte b = packetBytes[i];
+                                Log.i("data", String.valueOf(b));
+                                if(b == delimiter){
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    System.arraycopy(readBuffer, 0, encodedBytes,0, encodedBytes.length);
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    Log.i("data",data);
+                                    readBufferPosition = 0;
+                                    i = byteAvailable;
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(MenuActivity.this,data, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        stopWorker = true;
+                    }
+                }
+            }
+        });
     }
 }
