@@ -1,26 +1,22 @@
 package fr.shams.cadenaelectronique.Activities;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +32,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private InputStream mInputStream;
     private BluetoothDevice mDevice;
     private volatile boolean stopWorker;
-    private Thread workerThread;
     int readBufferPosition;
 
     @SuppressLint("MissingPermission")
@@ -124,42 +119,34 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     public void receptionData() throws IOException {
         final Handler handler = new Handler();
-        final int delimiter = 10;
+        final byte delimiter = 10;
 
         stopWorker = false;
         readBufferPosition = 0;
         byte[] readBuffer = new byte[1024];
-        workerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(!workerThread.currentThread().isInterrupted() && !stopWorker){
-                    try {
-                        int byteAvailable = mInputStream.available();
-                        if(byteAvailable > 0){
-                            byte[] packetBytes = new byte[byteAvailable];
-                            mInputStream.read(packetBytes);
-                            for(int i =0; i < byteAvailable; i++){
-                                byte b = packetBytes[i];
-                                Log.i("data", String.valueOf(b));
-                                if(b == delimiter){
-                                    byte[] encodedBytes = new byte[readBufferPosition];
-                                    System.arraycopy(readBuffer, 0, encodedBytes,0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
-                                    Log.i("data",data);
-                                    readBufferPosition = 0;
-                                    i = byteAvailable;
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(MenuActivity.this,data, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
+        new Thread(() -> {
+            while(!Thread.currentThread().isInterrupted() && !stopWorker){
+                try {
+                    int byteAvailable = mInputStream.available();
+                    if(byteAvailable > 0){
+                        byte[] packetBytes = new byte[byteAvailable];
+                        mInputStream.read(packetBytes);
+                        for(int i =0; i < byteAvailable; i++){
+                            byte b = packetBytes[i];
+                            Log.i("data", String.valueOf(b));
+                            if(b == delimiter){
+                                byte[] encodedBytes = new byte[readBufferPosition];
+                                System.arraycopy(readBuffer, 0, encodedBytes,0, encodedBytes.length);
+                                final String data = new String(encodedBytes, StandardCharsets.US_ASCII);
+                                Log.i("data",data);
+                                readBufferPosition = 0;
+                                i = byteAvailable;
+                                handler.post(() -> Toast.makeText(MenuActivity.this,data, Toast.LENGTH_SHORT).show());
                             }
                         }
-                    } catch (IOException e) {
-                        stopWorker = true;
                     }
+                } catch (IOException e) {
+                    stopWorker = true;
                 }
             }
         });
